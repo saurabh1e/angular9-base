@@ -3,6 +3,11 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {Interceptor} from "./config/http.intercepter";
+import {SharedModule} from "./@shared/shared.module";
+import {FormService} from "./@core/services/form.service";
 
 @NgModule({
   declarations: [
@@ -10,9 +15,14 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    SharedModule.forRoot(),
+    AppRoutingModule,
+    NgbModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true},
+    FormService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
